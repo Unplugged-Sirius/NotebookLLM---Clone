@@ -1,0 +1,38 @@
+# Bytecode / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment and secrets
+.env
+.env.*
+
+# Data / local artifacts
+*.sqlite3
+*.db
+*.log
+
+# Node / frontend
+node_modules/
+dist/
+build/
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local clones or sandboxes
+NotebookLLM---Clone/
