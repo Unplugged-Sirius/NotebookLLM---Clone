@@ -1,74 +1,57 @@
 # Learning Helper
 
-A multi-agent AI system for discovering, processing, and teaching with online learning resources.
+An AI “study buddy” for students who learn in languages other than English. It finds good English resources on the web, understands them, and teaches back in the learner’s language using text, audio, visuals, and interactive Q&A.
 
-## Project Structure
+## What we’re building
 
-```
-Learning-Helper/
-├── agents/                    # AI agents for different tasks
-│   ├── content_scout/        # Searches and classifies resources
-│   ├── translator_simplifier/ # Simplifies complex content
-│   ├── teaching_agent/       # Generates teaching materials
-│   └── conversation_agent/   # Interactive Q&A
-├── core/                      # Core utilities and config
-├── data/                      # Cached resources and lessons
-├── tests/                     # Unit tests
-├── notebooks/                 # Jupyter notebooks for experiments
-├── app/                       # FastAPI backend
-└── requirements.txt           # Python dependencies
-```
+- **Content Scout (Agent 1)**: Search the web (Serper/Google) for relevant articles/videos and return structured `Resource` objects.
+- **Extractor & Summarizer (Agent 2)**: Fetch pages, clean text, detect language, summarize, and classify the content. For YouTube, pull transcripts.
+- **Translator–Simplifier (planned)**: Translate/simplify to the target language and level, add local analogies.
+- **Teaching Agent (planned)**: Turn explanations into lessons, examples, quizzes, and hints.
+- **Conversation Agent (planned)**: RAG-powered chat that answers doubts in the learner’s language; future speech/vision extensions.
 
-## Getting Started
+## Quickstart
 
-### 1. Clone and Setup
-
+1) Install deps
 ```bash
-cd Learning-Helper
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### 2. Install Dependencies
-
-```bash
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
 
-### 3. Configure API Keys
-
-```bash
-cp .env.example .env
-# Edit .env with your API keys
+2) Configure API keys in `.env` (copy from `.env.example` if present):
+```
+SERPER_API_KEY=...
+GEMINI_API_KEY=...
+GEMINI_MODEL=gemini-1.5-flash   # or another model your account supports
 ```
 
-### 4. Run the Server
-
+3) Try the content scout demo
 ```bash
-python -m app.server
+python agents/content_scout/try.py
+```
+This searches for a topic (default: “recursion in programming”), fetches articles and YouTube transcripts, and prints summaries.
+
+4) Run tests
+```bash
+pytest
 ```
 
-The API will be available at `http://localhost:8000`
+## Repo layout
 
-### 5. Run Tests
-
-```bash
-pytest tests/
+```
+agents/
+  content_scout/    # search, fetch/clean, summarize, YouTube transcripts
+  translator_simplifier/  # planned
+  teaching_agent/         # planned
+  conversation_agent/     # planned
+core/              # config, LLM wrapper
+app/               # FastAPI backend (scaffolding)
+tests/             # pytest suites
 ```
 
-## Features (In Development)
+## Notes
 
-- 🔍 **Content Scout**: Search and classify learning resources
-- 📝 **Translator/Simplifier**: Break down complex topics
-- 🎓 **Teaching Agent**: Generate personalized lessons
-- 💬 **Conversation Agent**: Interactive Q&A system
-
-## API Endpoints
-
-- `GET /health` - Health check
-- `GET /api/search?query=...` - Search for resources
-- `POST /api/resources` - Add new learning resource
-
-## Development
-
-See `notebooks/agent_experiments.ipynb` for interactive development and testing.
+- `.env` and local clones are ignored via `.gitignore`; don’t commit secrets.
+- YouTube transcripts require `youtube-transcript-api` (included in requirements).
+- If an LLM/model is unavailable, the system falls back to stub summaries. Set `GEMINI_MODEL` to a supported ID for real summaries. 
