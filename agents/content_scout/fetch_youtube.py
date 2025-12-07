@@ -49,11 +49,18 @@ def fetch_youtube_transcript(
             "language": None,
             "error": "Could not parse YouTube video ID",
         }
-
-    languages = languages or ["en"]
-    api = YouTubeTranscriptApi()
-    transcript = api.fetch(video_id, languages=languages)
-
+    try: 
+        languages = languages or ["en"]
+        api = YouTubeTranscriptApi()
+        transcript = api.fetch(video_id, languages=languages)
+    except:
+        return {
+            "ok": False,
+            "title": "",
+            "text": "",
+            "language": None,
+            
+        }
 
     snippets = []
     for snippet in transcript:
@@ -74,5 +81,3 @@ def fetch_youtube_transcript(
         "error": None,
     }
 
-
-fetch_youtube_transcript("https://www.youtube.com/watch?v=xW5Twe0CoZc&t=292s")
